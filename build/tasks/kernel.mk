@@ -273,18 +273,22 @@ $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_CONFIG) $(DEPMOD) $(DTC)
 			echo "Building DTBs"; \
 			$(call make-kernel-target,dtbs); \
 		fi
+	$(hide) mkdir -p $(KERNEL_MODULES_OUT)/lib/modules
 	$(hide) if grep -q '=m' $(KERNEL_CONFIG); then \
 			echo "Building Kernel Modules"; \
 			$(call make-kernel-target,modules) || exit "$$?"; \
 			echo "Installing Kernel Modules"; \
 			$(call make-kernel-target,INSTALL_MOD_PATH=$(MODULES_INTERMEDIATES) INSTALL_MOD_STRIP=1 modules_install); \
 			kernel_release=$$(cat $(KERNEL_RELEASE)) \
-			kernel_modules_dir=$(MODULES_INTERMEDIATES)/lib/modules/$$kernel_release \
-			$(foreach s, $(TARGET_MODULE_ALIASES),\
-				$(eval p := $(subst :,$(space),$(s))) \
-				; mv $$(find $$kernel_modules_dir -name $(word 1,$(p))) $$kernel_modules_dir/$(word 2,$(p))); \
-			modules=$$(find $$kernel_modules_dir -type f -name '*.ko'); \
-			($(call build-image-kernel-modules,$$modules,$(KERNEL_MODULES_OUT),$(KERNEL_MODULE_MOUNTPOINT)/,$(KERNEL_DEPMOD_STAGING_DIR))); \
+			modules=$$(find $(MODULES_INTERMEDIATES)/lib/modules/$$kernel_release -type f -name '*.ko'); \
+			for f in $$modules; do \
+				$(PATH_OVERRIDE) $(KERNEL_TOOLCHAIN_PATH)strip --strip-unneeded $$f; \
+				mv $$f $(KERNEL_MODULES_OUT)/lib/modules; \
+			done; \
+			mkdir -p $(KERNEL_DEPMOD_STAGING_DIR)/lib/modules/0.0/$(KERNEL_MODULE_MOUNTPOINT)/lib/modules && \
+			find $(KERNEL_MODULES_OUT)/lib/modules -name *.ko -exec cp {} $(KERNEL_DEPMOD_STAGING_DIR)/lib/modules/0.0/$(KERNEL_MODULE_MOUNTPOINT)/lib/modules \; && \
+			$(DEPMOD) -b $(KERNEL_DEPMOD_STAGING_DIR) 0.0 && \
+			sed -e 's/\(.*modules.*\):/\/\1:/g' -e 's/ \([^ ]*modules[^ ]*\)/ \/\1/g' $(KERNEL_DEPMOD_STAGING_DIR)/lib/modules/0.0/modules.dep > $(KERNEL_MODULES_OUT)/lib/modules/modules.dep; \
 		fi
 
 .PHONY: kerneltags
