@@ -32,10 +32,12 @@ endif
 
 INTERNAL_BACON_TARGET := $(PRODUCT_OUT)/$(INTERNAL_BACON_NAME).zip
 
+MD5 := prebuilts/build-tools/path/$(HOST_OS)-x86/md5sum
+
 .PHONY: bacon
 bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(INTERNAL_BACON_TARGET)
-	$(hide) $(MD5SUM) $(INTERNAL_BACON_TARGET) | sed "s|$(PRODUCT_OUT)/||" > $(INTERNAL_BACON_TARGET).md5sum
+	$(hide) $(MD5) $(INTERNAL_BACON_TARGET) | sed "s|$(PRODUCT_OUT)/||" > $(INTERNAL_BACON_TARGET).md5sum
 	#@echo "Package Complete: $(INTERNAL_BACON_TARGET)" >&2
 
 	@echo -e ${CL_RED}""${CL_RED}
@@ -50,4 +52,3 @@ bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
 	@echo -e ${CL_RST}""Package Complete: "$(INTERNAL_BACON_TARGET)"${CL_RST}
 	@echo -e ${CL_RED}"=============================================================================="${CL_RED}
 	@echo -e ${CL_BLU}"Feel The Sting."${CL_RST}
-
