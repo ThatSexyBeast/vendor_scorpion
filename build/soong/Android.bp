@@ -1,14 +1,14 @@
 bootstrap_go_package {
-    name: "soong-aosip",
-    pkgPath: "aosip/soong/android",
+    name: "soong-scorpion",
+    pkgPath: "scorpion/soong/android",
     srcs: [
         "android/variable.go",
     ],
 }
 
 bootstrap_go_package {
-    name: "soong-aosip-generator",
-    pkgPath: "aosip/soong/generator",
+    name: "soong-scorpion-generator",
+    pkgPath: "scorpion/soong/generator",
     deps: [
         "blueprint",
         "blueprint-pathtools",
@@ -23,7 +23,7 @@ bootstrap_go_package {
     pluginFor: ["soong_build"],
 }
 
-aosip_generator {
+scorpion_generator {
     name: "generated_kernel_includes",
 
     // The headers make command

@@ -15,13 +15,13 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/aosip_arm.mk \
-    $(LOCAL_DIR)/aosip_arm64.mk \
-    $(LOCAL_DIR)/aosip_x86.mk \
-    $(LOCAL_DIR)/aosip_x86_64.mk
+    $(LOCAL_DIR)/scorpion_arm.mk \
+    $(LOCAL_DIR)/scorpion_arm64.mk \
+    $(LOCAL_DIR)/scorpion_x86.mk \
+    $(LOCAL_DIR)/scorpion_x86_64.mk
 
 COMMON_LUNCH_CHOICES := \
-    aosip_arm-userdebug \
-    aosip_arm64-userdebug \
-    aosip_x86-userdebug \
-    aosip_x86_64-userdebug
+    scorpion_arm-userdebug \
+    scorpion_arm64-userdebug \
+    scorpion_x86-userdebug \
+    scorpion_x86_64-userdebug

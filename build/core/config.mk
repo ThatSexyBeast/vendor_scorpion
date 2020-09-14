@@ -1,5 +1,5 @@
 
-# Copyright (C) 2018 AOSiP
+# Copyright (C) 2020 ScorpionROM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
 # limitations under the License.
 
 # Rules for QCOM targets
-include $(TOPDIR)vendor/aosip/build/core/qcom_target.mk
+include $(TOPDIR)vendor/scorpion/build/core/qcom_target.mk
 
-BUILD_RRO_SYSTEM_PACKAGE := $(TOP)/vendor/aosip/build/core/system_rro.mk
+BUILD_RRO_SYSTEM_PACKAGE := $(TOP)/vendor/scorpion/build/core/system_rro.mk
